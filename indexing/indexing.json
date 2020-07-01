@@ -1,0 +1,134 @@
+{
+    "settings": {
+       "index": {
+             "number_of_shards": 1,
+             "number_of_replicas": 1
+       },
+       "analysis": {
+         "analyzer": {
+           "s_analyzer01": {
+               "type": "custom",
+               "tokenizer": "icu_tokenizer",
+               "char_filter": ["punctuation_char_filter"],
+               "filter": ["stop_word_filter","ngram_filter"]      
+           },
+           "s_analyzer02": {
+               "type": "custom",
+               "tokenizer": "icu_tokenizer",
+               "char_filter":["punctuation_char_filter"],
+               "filter": ["stop_word_filter"]  
+
+           },
+           "e_analyzer": {
+               "type": "custom",
+               "tokenizer": "classic",
+               "char_filter":["punctuation_char_filter"],
+               "filter": ["ngram_filter"]
+           },
+           "s_search_analyzer" : {
+               "type": "custom",
+               "tokenizer": "standard",
+               "char_filter":["punctuation_char_filter"]
+           },
+           "e_search_analyzer" : {
+               "type": "custom",
+               "tokenizer": "classic",
+               "char_filter":["punctuation_char_filter"]
+           }
+         },
+         "char_filter": {
+            "punctuation_char_filter":{
+               "type":"mapping",
+               "mappings":[".=>","|=>","-=>","_=>","'=>","/=>",",=>"]
+            }
+         },
+         "filter": {
+               "ngram_filter": {
+                    "type" : "edge_ngram",
+                    "min_gram":"2",
+                    "max_gram":"20",
+                    "side":"front"
+               },
+               "stop_word_filter": {
+                    "type":"stop",
+                    "stopwords":["සහ","හා", "වැනි", "සේ", "‌මෙන්", "සමග","ත්","ගීත","සින්දු","ගෙ","ගේ","ගී"]
+               }
+         }
+       }
+      }, 
+      "mappings": {
+           "properties": {
+             "id": {
+                  "type": "integer"
+             },
+             "title_singlish": {
+                  "type": "text",
+                  "analyzer":"e_analyzer",
+                  "search_analyzer": "e_search_analyzer"
+             },
+             "title_sinhala": {
+                  "type": "text",  
+                  "analyzer": "s_analyzer01",
+                  "search_analyzer":"s_search_analyzer"
+             },
+             "artist_name": {
+                  "type": "text",
+                  "analyzer":"s_analyzer01",
+                  "search_analyzer": "s_search_analyzer",
+                  "fields": {
+                       "keyword":{
+                          "type":"keyword"
+                       }
+                   }
+             },
+             "genre": {
+                  "type": "text",
+                  "analyzer": "s_analyzer01",
+                  "search_analyzer": "s_search_analyzer",
+                  "fields": {
+                        "keyword":{
+                             "type":"keyword"
+                        }
+                  }
+             },
+             "writer_name": {
+                  "type": "text",
+                  "analyzer": "s_analyzer01",
+                  "search_analyzer": "s_search_analyzer",
+                  "fields": {
+                    "keyword":{
+                       "type":"keyword"
+                    }
+                  }
+             },
+             "music": {
+                  "type": "text",
+                  "analyzer": "s_analyzer01",
+                  "search_analyzer": "s_search_analyzer",
+                  "fields": {
+                    "keyword":{
+                       "type":"keyword"
+                    }
+                  }
+             },
+             "movie": {
+                "type": "text",
+                "analyzer": "s_analyzer01",
+                "search_analyzer": "s_search_analyzer",
+                "fields": {
+                  "keyword":{
+                     "type":"keyword"
+                  }
+                }
+           },
+             "views": {
+                  "type": "integer"
+             },
+             "lyrics": {
+                  "type":"text",
+                  "analyzer":"s_analyzer02",
+                  "search_analyzer": "s_search_analyzer"
+             }
+         }
+       } 
+}
