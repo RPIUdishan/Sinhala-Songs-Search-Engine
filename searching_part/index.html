@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="si">
+
+<head>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+</head>
+
+<body>
+    <div class="container" id="app">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h1>Sinhala Song Search Engine</h1>
+            </div>
+        </div>
+
+        <form class="form-inline" action="/search" method="POST" lang="si">
+            <input class="form-control mr-sm-2" type="text" name="query" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        {% if response != None %}
+        <div class="row">
+            {% for result in response['hits']['hits']%}
+
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {{ result._source.title_sinhala }} ({{ result._source.title_singlish }})
+                    </div>
+                    <div class="panel-body">
+                        <p>කලාකරුගේ නම (Artist Names) :{{ result._source.artist_name }}</p>
+                        <p>ප්‍රභේදය (Genre) :{{ result._source.genre }}</p>
+                        <p>පද රචකයා (Lyrics Creater):{{ result._source.writer_name }}</p>
+                        <p>සංගීත (Music):{{ result._source.music }}</p>
+                        <p>චිත්‍රපටය (Movie):{{result._source.movie}}</p>
+                        <p>නැරඹුම් ගණන (Views):{{ result._source.views }}</p>
+                        <p>පද රචනය (Lyrics):{{result._source.lyrics}}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>
