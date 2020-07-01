@@ -9,11 +9,9 @@ class SinhlaSongSpider(scrapy.Spider):
     name = "sinhala_songs_spider"
     allowed_domains = ["sinhalasongbook.com"]
     start_urls = ["https://sinhalasongbook.com/all-sinhala-song-lyrics-and-chords/?_page=" + str(x) for x in range(1,23)]    
-    
-    def parse(self, response):        
+    def parse(self, response):       
         for href in response.xpath("//main[contains(@id, 'genesis-content')]//div[contains(@class, 'entry-content')]//div[contains(@class, 'pt-cv-wrapper')]//h4[contains(@class, 'pt-cv-title')]/a/@href"):
-            href =  href.extract()  
-                   
+            href =  href.extract()       
             yield scrapy.Request(href, callback=self.parse_lyrics_from_href)
 
     def parse_lyrics_from_href(self,response):
@@ -68,6 +66,6 @@ class SinhlaSongSpider(scrapy.Spider):
             'views': views_data,
             'writer_name' : writer_name_data,
             'music' : music_data,
-            'movie' : movie_data,
-            'song' : song
+            'song' : song,
+            'movie' : movie_data
         }
